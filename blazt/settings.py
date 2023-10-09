@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'blazt.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'swing-postgres',
         'USER':os.environ["POSTGRES_USER"] ,
         'PASSWORD': os.environ["POSTGRES_PASSWORD"],
