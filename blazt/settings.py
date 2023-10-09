@@ -87,7 +87,8 @@ DATABASES = {
         'USER': "default" ,
         'PASSWORD': "r8Qicpkb7RLJ",
         'HOST':  "ep-polished-term-38662850-pooler.us-east-1.postgres.vercel-storage.com",
-        'PORT': '5432',
+        'PORT': '5432', 
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
 
