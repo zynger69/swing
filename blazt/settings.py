@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'blazt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'swing-postgres',
+        'NAME': 'verceldb',
         'USER': "default" ,
         'PASSWORD': "r8Qicpkb7RLJ",
         'HOST':  "ep-polished-term-38662850-pooler.us-east-1.postgres.vercel-storage.com",
