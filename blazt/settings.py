@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'blazt.urls'
 
 
-import os, psycopg2
+import os
 
 TEMPLATES = [
     {
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'swing-postgres',
         'USER':os.environ["POSTGRES_USER"] ,
         'PASSWORD': os.environ["POSTGRES_PASSWORD"],
-        'HOST': 'localhost',
+        'HOST':  os.environ["POSTGRES_HOST"],,
         'PORT': '5432',
     }
 }
