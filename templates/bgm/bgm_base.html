@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <style>
+    :root {
+      --high : rgba(255,255,255,.87);
+      --med : rgba(255,255,255,.60);
+      --low : rgba(255,255,255,.35);
+      
+      --dhigh : rgba(25,25,25.8);
+    }
+    img {
+      width : 100%;
+    }
+    #wrap2 {
+      width : 100%;
+      font-family: "Lato",Sans-Serif;
+      color : var(--high);
+    }
+  </style>
+  
+  <div id="wrap2">
+    {% block content2 %}
+    {% endblock %}
+  </div>
+  
+  <script>
+    
+    
+    
+    
+  </script>
+
+{% endblock %}

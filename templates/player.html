@@ -1,0 +1,747 @@
+
+{% extends "base.html" %}
+{% block content %}
+  <style>
+    :root {
+      --limegreen : rgba(50,205,50,.85);
+      --lightgray : lightgray;
+    }
+    #wrap {
+      background : #080808;
+    }
+    .hide {
+      display: none !important;
+    }
+    .hero {
+      margin-top : -4em;
+      
+      padding : 3.35em 0 0 0;
+      background : #101010;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    .hero-layer {
+      padding : 1em 0 0 0;      
+      background : linear-gradient(to bottom,rgba(0,0,0,.55),#080808 90%);
+      backdrop-filter: blur(1em);
+    }
+    #currentTrack {
+      overflow : hidden;
+      text-align:center;
+      color : lightgray;
+      display : flex ;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    #pp {
+      width : 13em;
+      height : 13em;
+      max-width : 300px;
+      max-height : 300px;
+      border-radius: .5em;
+      background : #101010;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size : 100% auto;
+      
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center center;
+    }
+    #pHolder {
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center center;
+      
+      width : 3em;
+      height : 3em;
+      border-radius: 10em;
+      background : rgba(0,0,0,.7);
+    }
+    #pHolder .bx-hourglass {
+      font-size : 1.25em;
+    }
+    #pIcon {
+      font-size: 2em;
+      color : #fafafa;
+    }
+    
+    #info {
+      color : lightgray;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: .5em;
+      place-items: center;
+      padding :  1em ;
+      z-index: 2;
+    }
+    #info * {
+      width : 80%;
+      text-align: center;
+    }
+    #info h1 {
+      font-family: "Lato",Sans-Serif;
+      font-size: 1em;
+      text-transform: capitalize;
+    }
+
+    #footer {
+      background : #101010;
+      background : rgba(25,25,25,.95);
+      backdrop-filter: blur(1em);
+      box-shadow: 0 -2em 4em #101010;
+      position: fixed;
+      bottom : 0;
+      width : 100%;
+      padding-bottom : 1em;
+    }
+
+    #ctrls {
+      display : flex;
+      justify-content: center;
+    }
+    #ctrls div {
+      margin : 0 1em;
+      display : flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #mainBtn {
+      width : 2.5em;
+      height : 2.5em;
+      border-radius: 50%;
+      background : linear-gradient(to bottom right,green,limegreen,lime,lawngreen);
+    }
+
+    #mainBtn i {
+      color : black;
+    }
+    #glider {
+      margin-top : -.9em;
+      padding-bottom : 1em;
+    }
+    #gliderRange {
+      -webkit-appearence : none;
+      appearance : none;
+      outline : none;
+      background : rgba(100,100,100,.6);
+      backdrop-filter: blur(1em);
+      height : .1em;
+      width : 100%;
+      border-radius : 1em;
+      transition: .25s;
+    }
+
+    #gliderRange::-webkit-slider-thumb {
+      -webkit-appearance : none;
+      appearance : none;
+      background : rgb(51,174,51);
+      border-radius : 50%;
+      width : .7em;
+      height : .7em;
+      transition: .25s;
+    }
+    #gliderRange::::-moz-range-thumb {
+      -webkit-appearance : none;
+      appearance : none;
+      background : rgb(51,174,51) ;
+      border-radius : 50%;
+      width : .7em;
+      height : .7em;
+      transition: .25s;
+    }
+    
+    #gliderRange::-webkit-slider-thumb:hover { 
+      width : 1em ;
+      height : 1em;
+      border : .25em solid rgb(35,141,35);
+    }
+    #gliderRange::::-moz-range-thumb:hover { 
+      width : 1em;
+      height : 1em;
+      border : .25em solid rgb(35,141,35);
+    }
+    
+    #glider div {
+      color : gray;
+      font-size : .9em;
+      font-family : "Lato",sans-serif;
+      display: flex;
+      width : 100%;
+      padding : .5em .75em .05em .75em ;
+      justify-content: space-between;
+    }
+    #glider div p {
+      font-size: .8em;
+    }
+    @media(min-width : 980px){
+      #glider div {
+        margin : 0 1em;
+      }
+    }
+    #lyricsSec{
+      color : darkgray;
+      text-align:center;
+      display : none;
+      font-size : .8em;
+      font-family: "Lato",Sans-Serif;
+    }
+    #lyrics {
+      white-space : pre-wrap;
+      padding : 1em;
+      line-height : 1.4em;
+    }
+    #mininav{
+      display : flex;
+      padding : .5em;
+    }
+    #mininav button {
+      flex-basis:50%;
+      background : #080808;
+      color : #606060;
+      padding : .5em;
+      border : none;
+      outline : none;
+      border-bottom : .15em solid #303030;
+      transition: .25s;
+      font-family: "Lato",Sans-Serif;
+    }
+    
+    /*------*/
+    #suggSec {
+      display : grid;
+      grid-template-columns:  1fr;
+      grid-gap: .5rem;
+      place-items: center;
+    }
+    
+    .sugg-block{
+      color : lightgray;
+      width : 90%;
+      max-width : 560px;
+      border-radius: .2em;
+      padding : .65em .5em;
+      
+      display: grid;
+      grid-template-columns: 3em auto 2em;
+      grid-gap: 1em;
+      place-items: center start;
+    }
+    .sugg-block a {
+      text-decoration: none;
+    }
+    .sugg-block a i {
+      color : gray;
+    }
+    .sugg-block a:hover i {
+      color : lightgray;
+    }
+    .sugg-block:hover b{
+      color : limegreen;
+    }
+    
+    .sugg-block .actLink {
+      width : 80%;
+    }
+    
+    .actLink img {
+     width : 100%;
+     border-radius: .25em;
+    }
+    
+    .sugginfo {
+      width : 90%;
+      display : grid;
+      grid-template-columns: 1fr;
+    }
+    .sugginfo * {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sugginfo b {
+      font-family: "Lato",sans-serif;
+      color : lightgray;
+      font-size: .9em;      
+      font-weight: 500;
+      padding-bottom : .2em;
+    }
+    .sugginfo p {
+      color : gray;
+      font-size: .55em;      
+      font-weight: 600;
+      text-transform: uppercase;
+      padding-top : .2em;
+      letter-spacing: .1em;
+    }
+
+    /*------*/
+    
+    .minis {
+      width : 20%;
+      max-width : 50px;
+      opacity : 0;
+      transition: 1s;
+    }
+    .minis i {
+      position : relative;
+      left : 50%;
+      top : 50%;
+      transform : translate(-50%,-50%);
+      width : 4em;
+      font-size : 1.5em;
+    }
+    .blend {
+      background: -webkit-linear-gradient(lime, green);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* DESkTOP */
+    @media (min-width : 980px){
+      #footer {
+        width : 80%;
+      }
+      #mininav {
+        display : flex;
+        justify-content: center;
+      }
+      #mininav button {
+        flex-basis : 150px;
+        margin: 0 .25em;
+      }
+    }
+    
+    #tags {
+      color : lightgray;
+      font-size: 0rem;
+    }
+
+    
+    .glightgray {
+      text-transform: uppercase ;
+      color : gray;
+      font-size : .7em;
+      letter-spacing: .1em;
+      font-weight: 600;
+      font-family: "Lato",Sans-Serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
+    }
+    
+    .navactive {
+      border-bottom-color : var(--limegreen) !important;
+      color : darkgray !important;
+    }
+    
+    .bx-play {
+      margin-left : .25rem !important;
+    }
+    
+    #dbtn {
+      width : 100%;
+      display : grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+    }
+    #dbtn a {
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+      text-decoration: none;
+      color : lightgray;
+      background : #303030;
+      border-radius: 0 .25em .25em 0;
+      border : .15em solid #303030;
+      border-left-color : limegreen;
+      padding : .4em 1em;
+      font-family: "Lato",Sans-Serif;
+      font-size : .9em;
+      margin : 1em 0 1.5em 0;
+    }
+    
+    #share-menu {
+      width : 80%;
+      max-width: 300px;
+      position: fixed;
+      bottom : 7rem;
+      left : 50%;
+      transform: translateX(-50%);
+      
+      background : rgba(50,50,50,.6);
+      backdrop-filter: blur(1em);
+      border : .08em solid rgba(75,75,75,.8);
+      border-radius : .5em;
+      padding : .5em 0;
+      
+      display : grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+      grid-gap: .5em;
+    }
+    #share-menu a {
+      width : 100%;
+      text-decoration: none;
+      color : lightgray;
+      font-family: "Lato",Sans-Serif;
+      padding : .5em 1em;
+      
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left : .2em solid transparent;
+    }
+    #share-menu a:hover {
+      background : rgba(50,50,50,.6);
+      border-left-color : limegreen;
+    }
+    
+  </style>
+  
+  <section class="hero" style='background-image : url("{{ songs.spic }}")'>
+    <section class="hero-layer">
+    <section id="currentTrack">
+      <div class="minis" onclick="backward()"  id="bw"><i class="bx bx-chevrons-left" ></i></div>
+      <div id="pp" onclick="musicHandle()" style='background-image : url("{{ songs.spic }}")' >
+        <div id="pHolder">
+          <i id="pIcon" class="bx bx-hourglass bx-flashing "></i>
+        </div> 
+      </div>
+      <div class="minis" onclick="forward()" id="fw"><i class="bx bx-chevrons-right"></i></div>
+    </section>
+    <br>
+  
+    <div id="info">
+      {% if songs.alb.name != "Swing" %}
+        <h1 itemprop="heading" class="lightgray">{{ songs.name }} ( {{ songs.alb.name }} )<span class="hide">mp3 song download {{ songs.desc }}</span></h1>
+      {% else %}
+        <h1 itemprop="heading" class="lightgray">{{ songs.name }} <span class="hide">song download {{ songs.desc }}</span></h1>
+      {% endif %}
+      <h2 class="glightgray">{{ songs.desc }}</h2>
+    </div>
+    
+    </section>
+  </section>
+  
+  <div id="dbtn">
+  {% if songs.dlink == "True" %}
+    <a href="{{ songs.link }}" download="swing-{{ songs.name }}.mp3" onclick="alertDload('Downloading {{ songs.name }} ( {{ songs.alb.name }} ) ')">Download</a>
+  {% else %}
+    <a href="{{ songs.dlink }}" download="swing-{{ songs.name }}.mp3" onclick="alertDload('Downloading {{ songs.name }} ( {{ songs.alb.name }} ) ')">Download</a>
+  {% endif %} 
+  </div>
+
+  <div id="mininav">
+    <button onclick="hideLyrics()" id="ssb" class="navactive">Queue</button>
+    <button onclick="showLyrics()" id="lb">Lyrics</button>
+  </div>
+
+  <section id="footer">
+    <section id="glider">
+      <input ontouchend="sett()" onmouseup="sett()" id="gliderRange" type="range" min="0" max="100" value="0" step="1">
+      <div>
+        <p id="curtime">0:00</p>
+        <p style="text-transform:capitalize;color:lightgray" class="" >{{ songs.name }}</p> 
+        <p id="length">0:00</p>
+      </div>
+    </section>
+
+    <div id="ctrls">
+      <div class="med">
+        <i style="font-size: 1.25rem" class="bx bxs-share-alt" onclick="share()" id="sharebtn"></i>
+      </div>
+      <!--
+      <div class="med">
+        <i style="font-size:1.4em" class="bx bx-equalizer" id="bpbutton" onclick="bestpart()"></i>
+      </div>
+      -->
+      <div class="med" >
+        <i  style="font-size:1.8em" onclick="playPrev()" class="bx bx-caret-left"></i>
+      </div>
+      <div id="mainBtn">
+        <i id="blockbtn" onclick="musicHandle()" class="bx bx-loader-alt bx-spin"></i>
+      </div>
+      <div class="med" >
+        <i style="font-size:1.8em" onclick="playNext()" class="bx bx-caret-right"></i>
+      </div>
+      <div class="med" >
+        <i style="font-size: 1.4em" class="bx bx-infinite" id="loopbtn" onclick="loopSong()"></i>
+      </div>
+    </div>
+    </section>
+  <br>
+
+  <section id="lyricsSec">
+    <div id="lyrics"><p>{{ songs.lyrics }}</p></div>
+  </section>
+
+  <section id="suggSec">
+    {% for each in suggs %}
+      <div class="sugg-block">
+        <a class="actLink" href="{% url 'player_view' each.pk each.alb.name each.name %}?page=1">
+          <img src="{{ each.spic }}" alt="{{ each.name }}-{{ each.alb.name }} mp3 song download - {{ each.desc }}">
+        </a>
+        <div class="sugginfo" onclick='playlistJump("{{ forloop.counter }}")' >
+          <b>{{ each.name }}</b>
+          <p>{{ each.desc }}</p> 
+        </div>
+        {% if each.dlink != "True" %}
+          <a href="{{ each.dlink }}" onclick="alertDload('Downloading {{ each.name }} ')"><i class="bx bx-download"></i></a>
+        {% else %}
+          <a href="{{ each.link }}" onclick="alertDload('Downloading {{ each.name }} ')"><i class="bx bx-download"></i></a>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </section>
+    
+  <div id="tags">
+    <h2>{{ songs.name }} - {{ songs.alb.name }} mp3 full song download - {{ songs.desc}}</h2>
+    <b>Download {{ songs.name }} mp3 song from the movie {{ songs.alb.name }} sung by {{ songs.desc }} in {{ songs.lang.name }} at 120kbps & 320kbps high quality on swing music for free. </b>
+  </div>
+    
+  
+  <div id="share-menu" class="hide">
+    <a href="#" onclick="shareTo('facebook')">Facebook<i class="bx bxl-facebook"></i></a>
+    <a href="#" onclick="shareTo('twitter')">Twitter<i class="bx bxl-twitter"></i></a>
+    <a href="#" onclick="shareTo('whatsapp')">Whatsapp<i class="bx bxl-whatsapp"></i></a>
+    <a href="#" onclick="shareTo('telegram')">Telegram<i class="bx bxl-telegram"></i></a>
+    <a href="#" onclick="shareTo('clipboard')">Copy URL<i class="bx bx-link"></i></a>
+    <a href="#" onclick="shareTo('more')">More<i class="bx bx-dots-vertical-rounded"></i></a>
+  </div>
+    
+  <div class="gap"></div>
+  <div class="gap"></div>
+
+  <script>
+  
+    let func = false;
+    var duration
+    var audio = new Audio("{{ songs.link }}")
+    
+    var shareText = "Download and listen to hundreds of songs on swing."
+    var shareURL = encodeURIComponent(window.location);
+
+    let blockbtn = document.getElementById("blockbtn")
+    let picon = document.getElementById("pIcon")
+    let lyrics = document.getElementById("lyricsSec")
+    let suggs = document.getElementById("suggSec")
+    let layer = document.getElementById("layer")
+    let pp = document.getElementById("pp")
+    let fw = document.getElementById("fw")
+    let bw = document.getElementById("bw")
+    
+    let loopbtn = document.getElementById("loopbtn")
+    let sharebtn = document.getElementById("sharebtn")
+    let sharemenu= document.getElementById("share-menu")
+    
+    let gr = document.getElementById('gliderRange')
+
+      audio.addEventListener("loadedmetadata", function(){
+        document.getElementById("length").innerHTML = toMins(audio.duration);
+        duration = audio.duration
+        func = true
+        musicHandle()
+      }, false);
+
+
+
+    function Play(){
+      if (func == true){
+        try {
+          audio.play()
+          blockbtn.className = "bx bx-pause"
+          picon.className = "bx bx-pause"
+          blockbtn.style.fontSize = "2em"
+        }catch(err){
+          alert(err)
+        }
+      }
+    }
+
+    function Pause(){
+      if (func == true){
+        try {
+          audio.pause()
+          blockbtn.className = "bx bx-play"
+          picon.className = "bx bx-play"
+          blockbtn.style.fontSize = "2em"
+        }catch(err){
+          alert(err)
+        }
+      }
+    }
+
+    function musicHandle(){
+      if (func == true){
+        if (audio.paused == true){
+          Play()
+        }else{
+          Pause()
+        }
+      }
+    }
+
+    function toMins(secs){
+      var mins = Math.floor(secs/60)
+      var rem = Math.round(secs-(mins*60))
+      var x = ("0" + rem).slice(-2);
+      return mins+":"+x;
+    }
+
+    function backward(){
+      audio.currentTime -= 10;
+    }
+    function forward(){
+      audio.currentTime += 10;
+    }
+
+
+    // current time updater
+    audio.addEventListener("timeupdate", function (){
+      document.getElementById("curtime").innerHTML = toMins(audio.currentTime)
+      gr.value = audio.currentTime * (100 / duration);
+
+      var value = (gr.value-gr.min)/(gr.max-gr.min)*100
+      gr.style.background = 'linear-gradient(to right, var(--limegreen) 0%, var(--limegreen) ' + value + '%, #606060 ' + value + '%, #606060 100%)'
+
+    });
+
+   function sett(){
+     var val = document.getElementById("gliderRange").value
+     audio.currentTime = duration * (val/100);
+   }
+
+    function miniNavHighlight(){
+      if (lyrics.style.display == "none"){
+        document.getElementById("ssb").classList.add("navactive")
+        document.getElementById("lb").classList.remove("navactive")
+      }else{
+        document.getElementById("ssb").classList.remove("navactive")
+        document.getElementById("lb").classList.add("navactive")
+      }
+    }
+
+    function showLyrics(){
+      lyrics.style.display = "block"
+      suggs.style.display = "none"
+      miniNavHighlight()
+    }
+
+    function hideLyrics(){
+      lyrics.style.display = "none"
+      suggs.style.display = "grid"
+      miniNavHighlight()
+    }
+    
+    
+    function loopSong(){
+      if (audio.loop == false){
+        loopbtn.style.color = "limegreen"
+        audio.loop = true;
+        alertDload("Playing in loop");
+      }else{
+        loopbtn.style.color = "darkgray"
+        audio.loop = false;
+        alertDload("Exited from the loop");
+      }
+    }
+   
+    audio.addEventListener("ended", function (){
+        if (audio.loop == false){
+          playNext()
+        }
+    })
+
+    fw.addEventListener("mousedown", function (){
+      fw.style.opacity = "0.5"
+      setTimeout(function (){
+        fw.style.opacity = "0"
+      },500)
+    })
+    bw.addEventListener("mousedown", function (){
+      bw.style.opacity = "0.5"
+      setTimeout(function (){
+        bw.style.opacity = "0"
+      },500)
+    })
+    
+    function playlistJump(toSongId){
+      let params = new URLSearchParams(window.location.search)
+      params.set("page",parseInt(toSongId));
+      params.toString();
+      window.location = window.location.pathname+"?"+params
+    }
+
+    function playNext(){
+      let params = new URLSearchParams(window.location.search)
+      params.set("page",parseInt(params.get("page"))+1)
+      params.toString();
+      window.location = window.location.pathname+"?"+params
+    }
+
+    function playPrev(){
+      let params = new URLSearchParams(window.location.search)
+      params.set("page",parseInt(params.get("page"))-1)
+      params.toString();
+      window.location = window.location.pathname+"?"+params
+    }
+    
+
+    function share(){
+      if ( sharemenu.classList.contains("hide") == true) {
+        sharemenu.classList.remove("hide")
+        sharebtn.style.color = "limegreen"
+      }else{
+        sharemenu.classList.add("hide")
+        sharebtn.style.color = "darkgray"
+      }
+    }
+    
+    function shareTo(smedia){
+      switch (smedia){
+        
+        case "facebook":
+          window.location = "https://www.facebook.com/sharer/sharer.php?u="+shareURL
+          break;
+          
+        case "twitter":
+          window.location = "https://twitter.com/intent/tweet?url="+shareURL
+          break;
+          
+        case "whatsapp":
+          window.location = "https://wa.me/?text="+shareURL
+          break;
+          
+        case "telegram":
+          window.location = "https://t.me/share/url?url="+shareURL+"&text="+shareText
+          break;
+        
+        case "clipboard":
+          var input = document.createElement('input');
+          input.setAttribute('value', shareURL);
+          document.body.appendChild(input);
+          input.select();
+          var result = document.execCommand('copy');
+          document.body.removeChild(input);
+          alertDload("Copied URL");
+          break;
+          
+        default :
+          navigator.share({
+            title: document.title,
+            text: shareText,
+            url: shareURL
+          })
+          .then(() => console.log('Successful share! 🎉'))
+          .catch(err => console.error(err));
+      }
+    }
+    
+    {% include "player_notifs.js" %}
+   
+  </script>
+
+{% endblock %}

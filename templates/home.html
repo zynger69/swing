@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  #msg {
+    color : lightgray;
+    margin : 1em 2em;
+  }
+  #hrmsg {
+    height : .075em;
+    margin : 1em 0 2em 0;
+  }
+  
+  #wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    place-items: center;
+    grid-gap: .75em;
+    padding : 1em;
+  }
+  
+  .container {
+    width : 100%;
+    aspect-ratio: 1/1;
+    background : #101010;
+    border-radius : .5em;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    
+    padding : .5em 1em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size : 100% auto;
+    border : .075em solid ;
+    
+    transition: .4s;
+  }
+  .container:hover {
+    border-bottom-color : gray;
+  }
+  
+  .container b {
+    color : lightgray;
+    font-family: "Lato",Sans-Serif;
+    font-size: .8em;    
+  }
+  
+  .container p {
+    color : gray;
+    font-size: .7em;
+    margin-top: .15em;
+  }
+  
+  .container b, .container p{
+    width : 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+</style>
+
+{% if messages %}
+  {% for msg in messages %}
+    <p id="msg" class="shead">{{ msg }}</p>
+    <hr class="shr" id="hrmsg">
+  {% endfor %}
+{% endif %}
+
+<section id="wrapper">
+  {% for song in songs %}
+    <div onclick="window.location = `{% url 'player_view' song.pk song.alb.name song.name %}?page=1`" class="container" style="background-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,.65),rgba(0,0,0,.1)),url({{ song.spic }})" >
+      <b>{{ song.name }}</b>
+      <p>{{ song.desc }}</p>
+    </div>
+  {% endfor %}
+</section>
+
+
+{% endblock %}

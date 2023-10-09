@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "blazt/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "blazt/wsgi.py"
+      }
+    ]
+}

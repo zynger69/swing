@@ -1,0 +1,113 @@
+<style>
+  #fixedbar {
+    background : rgba(15,15,15,.8);
+    backdrop-filter: blur(1em);
+    border-bottom : .05em solid rgba(25,25,25,.8);
+    position : fixed;
+    top : 0;
+    width : 100%;
+    padding : 0 1em;
+    z-index: 99;
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : 1em 1.25em ;
+  }
+  #fixedbar p {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: .15em;
+  }
+  a i{
+    text-decoration: none;
+    color : #fff;
+    font-size : 1.25em;
+  }
+  #navbar{
+    width : 60%;
+    height : 100%;
+    position : fixed;
+    left : -60%;
+
+    background : rgba(15,15,15,.8);
+    backdrop-filter: blur(1em);
+    border-right : .06em solid rgba(75,75,75,.8);
+    color : lightgray;
+    padding-top : 4em;
+    z-index : 98;
+    transition: .5s;
+    
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #navbar a {
+    width : 100%;
+    
+    text-decoration: none;
+    padding : 1em 1em 1em 2em;
+    font-size: .8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    color : darkgray;
+    letter-spacing: .15em;
+    border-left : .2em solid transparent;
+  }
+  #navbar a:hover {
+    border-left-color :limegreen;
+    background : rgba(50,50,50,.6);
+    color : lightgray;
+  }
+
+
+  @media (min-width:768px){
+    #navbar {
+      width : 20%;
+      display : flex;
+      left : 0%;
+    }
+    #menuicon {
+      display : none;
+    }
+  }
+
+
+</style>
+
+<section id="fixedbar">
+  <a><i onclick="toggleNav()" id="menuicon" class="bx bx-menu"></i></a>
+  <p onclick="window.location='/'" class="greenblend">swing</p>
+  <a id="srchnav" href="#"><i id="sbtn" class="bx bx-search"></i></a>
+</section>
+
+<div id="navbar">
+    <a href="/English/">English</a>
+    <a href="/Telugu/">Telugu</a>
+    <a href="/Tamil/">Tamil</a>
+    <a href="/Punjabi/">Punjabi</a>
+    <a href="/Hindi/">Hindi</a>
+</div>
+
+
+
+<script>
+  let sn = document.getElementById("srchnav")
+  let nb = document.getElementById("navbar")
+  
+  var nbopen = false
+
+  function toggleNav(){
+    if (nbopen == false){
+      nb.style.left = "0%"
+      nbopen = true
+      document.getElementById("menuicon").className = "bx bx-x"
+    }else{
+      nb.style.left = "-60%"
+      nbopen = false
+      document.getElementById("menuicon").className = "bx bx-menu"
+    }
+    
+    
+  }
+</script>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .playlistblock {
+     padding : 4em 1em;
+     border-radius : .3em;
+     flex-basis : 98%;
+     margin: 2% 1%;
+     text-align: center;
+     background-repeat: no-repeat;
+     background-position: center;
+     background-size : 100% auto;
+  }
+  
+  .playlistblock strong {
+    opacity : .6;
+    color : lawngreen;
+  }
+  
+  @media (min-width : 760px){
+    .playlistblock {
+      flex-basis : 48%;
+    }
+  }
+  
+</style>
+
+<section class="wrapper">
+  {% for list in lists %}
+   <div class="playlistblock" onclick="window.location=`{% url 'playlist_view' list.pk %}?page=1`" style="background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url({{ list.displaypic }})">
+     <strong>{{ list.title }}</strong>
+    </div>
+  {% endfor %}
+</section>
+
+
+{% endblock %}

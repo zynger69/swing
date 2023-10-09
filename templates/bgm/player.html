@@ -1,0 +1,416 @@
+{% extends "bgm/bgm_base.html" %}
+{% block content2 %}
+  
+  <style>
+    a {
+      text-decoration: none;
+    }
+    #bgm_play_bowl {
+      
+    }
+    #head_play {
+      padding  : 2em 2em 0 2em;
+      background : var(--dhigh);
+      border-bottom-left-radius: 1.5em;
+      border-bottom-right-radius: 1.5em;
+      
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 1em;
+      place-items: center;
+    }
+    @media (min-width : 768px){
+      #head_play {
+        display : grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1em;
+        place-items: center;
+      }
+    }
+    #head_play img {
+      border-radius : .5em;
+    }
+    #bgm_desc {
+      width : 100%;
+      display: grid ;
+      grid-template-columns: 1fr;
+      grid-gap: .5em;
+      place-items: center;
+      text-align: center;
+      padding : 1em ;
+    }
+    @media (min-width : 768px){
+      #bgm_desc {
+        display: grid ;
+        grid-template-columns: 1fr;
+        grid-gap: .5em;
+        place-items: center start ;
+        text-align: left;
+      }
+    }
+    #bgm_name {
+      color : var(--high);
+      font-size: 1.25em;
+    }
+    #bgm_rem {
+      color : var(--low);
+      font-size: .7em;
+      text-transform: uppercase;
+      font-weight: thin;
+      letter-spacing: .1em;
+    }
+    #bgm_btns {
+      width : 100%;
+      padding : 1.5em 0  0 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 1.5em;
+      place-items: center;
+    }
+    @media (min-width : 768px){
+      #bgm_btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1.5em;
+        place-items: center start;
+      }
+    }
+    #play_btn {
+      background : limegreen;
+      padding : .5em;
+      border-radius: 50%;
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+    }
+    #play_btn_icon {
+      font-size: 2.5em;
+    }
+    .bx-play {
+      transform: translateX(5%);
+    }
+
+    #mini_btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      place-items: center;
+      grid-gap: .75em ;
+      
+    }
+    #mini_btns a {
+      background : rgba(50,50,50,.8);
+      padding : .75em .85em;
+      border-radius: 50%;
+      color : var(--med);
+      text-decoration: none;
+      font-size : .9em;
+    }
+    
+    #d_btn:hover {
+      display : grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: .5em;
+      place-items: center;
+      border-radius: 2em !important;
+    }
+    #d_btn:hover #dNum {
+      display : block;
+    }
+    #dNum {
+      display: none;
+    }
+    
+    
+    #body_play {
+      width : 100%;
+      padding : 1.5em 1em;
+    }
+    
+    .sugg_slider_bowl {
+      width : 100%;
+      padding : 2em 1em ;
+      
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center start;
+      grid-gap: 1em;
+    }
+    .sugg_slider_bowl h2 {
+      font-size: 1.1rem ;
+    }
+    
+    .sugg_slider_cont {
+      width : 100%;
+      
+      display : grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+      grid-gap: .5em 1.5em;
+      place-items: center start;
+      
+    }
+    
+    .sugg_cont {
+      width : 100%;
+      height : 100%;
+      background : var(--dhigh);
+      padding : 1.5em 2em 1.5em 2em;
+      border-radius: .5em;
+      position: relative;
+      color : var(--med);
+      font-size : .8em;
+      text-transform: uppercase;
+      
+      display: grid;
+      grid-template-columns: 1fr 1em;
+      place-items: center start;
+      grid-gap: .5em;
+    }
+    .sugg_cont h4 {
+      width : 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis ;
+    }
+    .sugg_cont i {
+      background : rgba(50,50,50,.8);
+      padding : .25em .25em .25em .30em;
+      border-radius: 50%;
+    }
+    .sugg_cont:hover {
+      color : limegreen;
+    }
+    
+    .sugg_cont_2 {
+      width : 100%;
+      height : 100%;
+      border-radius: .5em;
+      
+      display: grid;
+      grid-template-columns: 1fr ;
+      place-items: center;
+      grid-gap: .75em;
+    }
+    .sugg_cont_2 img {
+      border-radius: inherit;
+    }
+    .sugg_cont_2 div {
+      width : 100%;
+      height : 100%;
+      
+      padding-bottom : 1em;
+
+      display : grid;
+      grid-template-columns: 2fr 1fr;
+      place-items: center start;
+      grid-gap: 1em;
+    }
+    .sugg_cont_2 h4 {
+      width : 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis ;
+      font-size: .8em;
+      font-weight: thin;
+      color : var(--med);
+
+    }
+    .sugg_cont_2 p {
+      width : 100%;
+      color : var(--low);
+      font-size: .6em;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+
+      text-align: right;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis ;
+    }
+
+    
+    #pbar {
+      width : 100%;
+      background : var(--low);
+      height : .06em;
+      
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #pinbar {
+      transition: 1s;
+      width : 0%;
+      height : inherit;
+      background : limegreen;
+    }
+    
+    .sfade {
+      width : 100%;
+      height : .1em;
+      border : none;
+      outline : none;
+      
+      background : linear-gradient(to right, transparent, var(--low), transparent);
+    }
+
+
+  </style>
+  <div id="bgm_play_bowl">
+    <div id="head_play">
+      <img src="{{ bgm.name.poster }}" alt="{{ bgm.name.name }} from {{ bgm.alb.name }} by {{ bgm.remixer.name }}">
+      <div id="bgm_desc">
+        <h1 id="bgm_name">{{ bgm.name.name }} ( {{ bgm.alb.name}} )</h1>
+        <p id="bgm_rem">{{ bgm.remixer.name }} ||  <span id="curTime">00:00</span> / <span id="durTime">00:00</span></p>
+        <div id="bgm_btns">
+          <div id="play_btn" onclick="togglePP()">
+            <i id="play_btn_icon" class="bx bx-loader bx-flashing"></i>
+          </div>
+          <div id="mini_btns">
+            <a href="{{ bgm.dlink }}" id="d_btn" onclick="alertDload('Downloading {{ bgm.name.name }} by {{ bgm.remixer.name }}'); DIncr({{ bgm.pk }})"><span id="dNum">{{ bgm.dloads }}</span> <i class="bx bx-download"></i></a>
+            <a href="#" onclick="share()" id="s_btn"><i class="bx bxs-share-alt"></i></a>
+          </div>
+        </div>
+      </div>
+      <div id="pbar">
+        <div id="pinbar"></div>
+      </div>
+    </div>
+    <div id="body_play">
+      
+      <div class="sugg_slider_bowl">
+        <h2>Edits of {{ bgm.name.name }}</h2>
+        <div class="sugg_slider_cont">
+          {% for ss in sameSong %}
+            <a class="sugg_cont" href="{% url 'bgm_player2' ss.pk ss.name.name ss.alb.name %}">
+              <h4>{{ ss.remixer.name }}</h4>
+              <i class="bx bx-play"></i>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <hr class="sfade">
+      
+      <div class="sugg_slider_bowl">
+        <h2>BGMs from {{ bgm.alb.name }}</h2>
+        <div class="sugg_slider_cont">
+          {% for sa in sameAlb %}
+            <a class="sugg_cont_2" href="{% url 'bgm_player2' sa.pk sa.name.name sa.alb.name %}">  
+              <img src="{{ sa.name.poster }}" alt="{{ sa.name.name }} bgm edit by {{ sa.remixer.name }}">
+              <div>
+                <h4>{{ sa.name.name }}</h4>
+                <p>{{ sa.remixer.name }}</p>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <hr class="sfade">
+            
+      <div class="sugg_slider_bowl">
+        <h2>Edits from {{ bgm.remixer.name }}</h2>
+        <div class="sugg_slider_cont">
+          {% for sc in sameChannel %}
+            <a class="sugg_cont" href="{% url 'bgm_player2' sc.pk sc.name.name sc.alb.name %}">
+              <h4>{{ sc.name.name }}</h4>
+              <i class="bx bx-play"></i>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    
+    var audio = new Audio("{{ bgm.link }}");
+
+    var ready = false;
+    var pbtn = document.getElementById("play_btn")
+    var pbtnicon = document.getElementById("play_btn_icon")
+    
+    var pinbar = document.getElementById("pinbar")
+    var durTime = document.getElementById("durTime")
+    var curTime = document.getElementById("curTime")
+
+
+    audio.addEventListener("canplay",function(){
+      ready = true;
+      durTime.innerHTML = ModTime(audio.duration);
+      Pause()
+    })
+    
+    function ModTime(raw_time){
+      var mins = Math.floor(raw_time / 60 );
+      var secs = Math.round(raw_time % 60,2) ;
+      
+      return String(mins).padStart(2, '0')+":"+String(secs).padStart(2, '0');
+    }
+    
+    function share(){
+      var shareText = "Download all the latest bgms and songs only on swing! "
+      var shareURL = encodeURIComponent(window.location);
+      
+      navigator.share({
+            title: document.title,
+            text: shareText,
+            url: window.location
+          })
+      .then(() => console.log('Successful share! 🎉'))
+      .catch(err => console.error(err));
+    }
+    
+    function togglePP(){
+      if (audio.paused != true){
+        Pause()
+      }else{
+        Play()
+      }
+    }
+    
+    function Play(){
+      if ( ready == true ){
+        pbtnicon.className = "bx bx-pause"
+        audio.play()
+      }
+    }
+    
+    function Pause(){
+      if ( ready == true){
+        pbtnicon.className = "bx bx-play"
+        audio.pause()
+      }
+    }
+    
+    audio.addEventListener("ended",function(){
+      Pause()
+    })
+    
+    audio.addEventListener("timeupdate", function (){
+      curTime.innerHTML = ModTime(audio.currentTime)
+      pinbar.style.width = ( ( audio.currentTime + 1 ) / audio.duration ) * 100 +"%"
+    })
+    
+    
+    function DIncr(pid){
+      var xhr = new XMLHttpRequest();
+      
+      var url = window.location.protocol+"//"+window.location.host+'/dbgm/'+pid; 
+
+      xhr.open("GET", url, true); 
+      
+      xhr.onreadystatechange = function () { 
+          if (this.status == 200) { 
+              alertDload(( {{ bgm.dloads }} + 1)+" downloads till now"); 
+          }
+        }
+        
+      xhr.send()
+
+    }
+    
+  </script>
+  
+{% endblock %}

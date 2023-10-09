@@ -1,0 +1,200 @@
+
+  <style>
+    
+    #search-bowl {
+      width : 100%;
+      
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+      grid-gap: 1rem;
+      padding : 2em 0;
+      
+    }
+    #search-cont {
+      width : 80% ;
+      max-width: 400px;
+      border : .1em solid #202020;
+      border-left-color: lime;
+      background : #202020;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding : .5em .75em ;
+      border-radius: 0 .25em .25em 0;
+    }
+    
+    #search-cont i {
+      flex-basis: 10%;
+      color : #757575;
+    }
+
+    #inpname {
+      flex-basis: 80%;
+      font-family: "Nunito",Sans-Serif;
+      font-size: 1rem;
+      color : lightgray;
+      border : none;
+      outline : none;
+      background : transparent;
+    }
+    
+    #search-res {
+      width : 80%;
+      max-width: 400px;
+      padding : 2em 0;
+    }
+
+    #results-bowl {
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center start;
+      grid-gap: 1.5em;
+      padding : 1em 0;
+      width : 100%;
+    }
+    .result {
+      width : 100%;
+      display : grid;
+      grid-template-columns: 85% 15%;
+      place-items: center start;
+    }
+    .result img {
+      width : 100%;
+      max-width: 2.5em;
+      border-radius: .25em;
+    }
+    .res-info {
+      width : 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      place-items: center start;
+      grid-gap: .15em;
+    }
+    .res-info b, .res-info p{
+      width : 90% ;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .res-info b {
+      color : lightgray;
+      font-family: "Lato",Sans-Serif;
+    }
+    .res-info p {
+      color : gray;
+      font-size: .8em;
+    }
+    
+    .sload {
+      animation : kip .5s ;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      animation-direction: alternate; 
+    }
+    @keyframes kip {
+      0%{
+        background : linear-gradient(to right,lime,rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6));
+      }
+      25%{
+        background : linear-gradient(to right,rgba(100,100,100,.6),lime,rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6));
+      }
+      50%{
+        background : linear-gradient(to right,rgba(100,100,100,.6),rgba(100,100,100,.6),lime,rgba(100,100,100,.6),rgba(100,100,100,.6));
+      }
+      75%{
+        background : linear-gradient(to right,rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6),lime,rgba(100,100,100,.6));
+      }
+      100%{
+        background : linear-gradient(to right,rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6),rgba(100,100,100,.6),lime);
+      }
+    }
+    
+  </style>
+
+  <div id="search-bowl">
+    <div id="search-cont">
+      <i class="bx bx-search"></i>
+      <input type="text" name="inpname" id="inpname" value="" autocomplete="off" placeholder="Search"/>
+      <i class="bx bx-x" id="inpclr"></i>
+    </div>
+    
+    <div id="search-res">
+      
+      <p class="shead" id="srchhead">Search for your fav songs</p>
+      <hr class="shr" id="slder">
+      
+      <div id="results-bowl">
+        <!-- songs appear here -->
+      </div>
+    </div>
+  </div>
+
+<script>
+    
+    var prodinput = document.getElementById("inpname")
+    var shower = document.getElementById("results-bowl")
+    
+    var slder = document.getElementById("slder")
+    
+    var inpclr = document.getElementById("inpclr")
+    var srchhead = document.getElementById("srchhead")
+    
+    prodinput.addEventListener("keyup",(e)=>{
+      
+      var prodkey = e.target.value
+     
+      while (shower.firstChild) {
+          shower.removeChild(shower.firstChild);
+        } 
+      slder.classList.remove("sload");
+        
+      if ( prodkey.length > 2 ){
+        
+        slder.classList.add("sload");
+        
+        fetch ("/search/",{
+          body : JSON.stringify({"inpname":prodkey}),
+          method : "POST",
+        })
+          
+          .then((res) => res.json())
+          .then((data) => {
+           
+            for (var i = 0; i < data.length;i+=1){
+
+              var str = ` <div class="result" onclick='window.location="/song/`+data[i].id+`/Swing/`+data[i].name+`/?page=1"'>
+          <div class="res-info">
+            <b>`+data[i].name+`</b>
+            <p>`+data[i].desc+`</p>
+          </div>
+          <img src="`+data[i].spic+`" alt= song picture" />
+        </div>`
+              shower.innerHTML += str
+            
+              srchhead.innerHTML = "results for "+prodkey;
+              
+              slder.classList.remove("sload");
+            }
+            
+          })
+      }else {
+        while (shower.firstChild) {
+          shower.removeChild(shower.firstChild);
+        }
+        slder.classList.remove("sload");
+        srchhead.innerHTML = "search for your fav songs"
+      }
+      
+    })
+    
+    
+    inpclr.addEventListener("click",function(){
+      prodinput.value = "";
+      while (shower.firstChild) {
+        shower.removeChild(shower.firstChild);
+      }
+      srchhead.innerHTML = "search for your fav songs"
+      slder.classList.remove("sload"); 
+    })
+</script>

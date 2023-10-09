@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="theme-color" content="#000">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=0">
+
+    <meta name="google-site-verification" content="oevM4pLBZYtVbL3C19lM9d9XNbPJ2T0FEmSF88sBrv0" />
+
+    <link rel="icon" type="image/png" href="https://swing.pythonanywhere.com/static/logo.png"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+
+    <!-- title -->
+    <title>{{ songs.name }} - {{ songs.lang.name }} ( {{ songs.alb.name }} ) mp3 song download - {{ songs.desc }} - swing music</title>
+    <meta name="og:title" content="{{ songs.name }} - {{ songs.lang.name }} ( {{ songs.alb.name }} ) mp3 song download - {{ songs.desc }} - swing music">
+    <meta name="twitter:title" content="{{ songs.name }} - {{ songs.lang.name }} ( {{ songs.alb.name }} ) mp3 song download - {{ songs.desc }} - swing music">
+
+    <!-- description -->
+    <meta name="description" content="{{ songs.name }} song download {{ songs.alb.name }} by {{ songs.desc }} . {{ songs.name }} full MP3 download naa songs , swing, pagalsongs">
+    <meta name="og:description" content="{{ songs.name }} song download {{ songs.alb.name }} by {{ songs.desc }} . {{ songs.name }} full MP3 download naa songs , swing, pagalsongs">
+    <meta name="twitter:description" content="{{ songs.name }} song download {{ songs.alb.name }} by {{ songs.desc }} . {{ songs.name }} full MP3 download naa songs , swing, pagalsongs">
+
+    <!-- image -->
+    <meta name="og:image" content="{{ songs.spic }}">
+    <meta name="twitter:image" content="{{ songs.spic }}">
+
+    <!-- style sheet -->
+    <style>
+
+      i {
+        font-size : 1.25em;
+      }
+      * {
+        box-sizing: border-box;
+        margin : 0;
+      }
+
+      body {
+        background : black;
+        margin : 0;
+        font-family: 'Lato', sans-serif;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+      }
+
+      @media(min-width:760px){
+        #wrap ,#searchland{
+          padding-left : 20%;
+        }
+      }
+
+      .greenblend {
+        background: -webkit-linear-gradient(lawngreen,green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .gap {
+        height : 4em;
+      }
+
+      .white {
+        color : rgba(255,255,255,87%);
+      }
+
+      .med {
+        color : rgba(255,255,255,65%);
+      }
+
+      #searchland {
+        width : 100%;
+        height : 100%;
+        z-index: 98;
+
+        position: fixed;
+        overflow: scroll;
+        top : 0;
+        right : -100%;
+
+        transition: .5s;
+
+        background : rgba(15,15,15,.8);
+        backdrop-filter: blur(1em);
+        padding : 4em 0 0 0;
+      }
+
+      @media(min-width : 768px){
+        #searchland {
+          width : 80%;
+        }
+      }
+
+      .shead {
+        text-transform: uppercase;
+        color : lightgray;
+        letter-spacing: .15em;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        margin: 1rem 0;
+        font-size: .8em;
+      }
+      .shr {
+        width : 100%;
+        border : none;
+        outline : none;
+        background : rgba(100,100,100,.6);
+        backdrop-filter: blur(1em);
+        height : .05em;
+        margin: 1rem 0;
+      }
+
+      #alertCont {
+        position : fixed;
+        top : 0;
+        left : 0;
+        width : 100%;
+        z-index: 199;
+        padding : .5em;
+        transition: .75s;
+
+        display: none;
+        grid-template-columns: 1fr;
+        place-items: center;
+      }
+
+      #alertbox {
+        width : 100%;
+        background : rgb(0,102,255);
+        color : #eee;
+        font-size: .9em;
+        font-family: "Lato",Sans-Serif;
+        padding : .75em 1em;
+        border-radius: .35em;
+        transition : inherit;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        place-items: center;
+      }
+
+      #alertbox p {
+        max-width : 85%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    {% include "loader.html" %}
+    {% include "header.html" %}
+
+    <div class="gap"></div>
+    <div id="alertCont">
+       <div id="alertbox"></div>
+    </div>
+
+
+    <div id="wrap">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <div id="searchland">
+      {% include "search.html" %}
+    </div>
+
+    <script>
+      var scrhnav = document.getElementById("srchnav")
+      var sbtn = document.getElementById("sbtn")
+      var wrap = document.getElementById("wrap")
+      var searchland = document.getElementById("searchland")
+      var sopen = false
+
+      srchnav.addEventListener("click", function (){
+        if (sopen == false){
+          searchland.style.position = "fixed"
+          searchland.style.right = "0%"
+          sopen = true
+          sbtn.className = "bx bx-x"
+        }else{
+          searchland.style.position = "fixed"
+          searchland.style.right = "-100%"
+          sopen = false
+          sbtn.className = "bx bx-search"
+        }
+
+      })
+
+
+
+      function alertDload(alertText){
+
+        document.getElementById("alertbox").innerHTML = '<p>'+alertText+'</p>'
+
+        document.getElementById("alertCont").style.display = "grid"
+
+        setTimeout(function(){
+          document.getElementById("alertCont").style.display = "none"
+        },3000)
+
+      }
+
+
+
+    </script>
+
+  </body>
+</html>
