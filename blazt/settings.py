@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'blazt.urls'
 
 
-import os
+import os, psycopg2
 
 TEMPLATES = [
     {
